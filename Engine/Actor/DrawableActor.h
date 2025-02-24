@@ -18,6 +18,8 @@ public:
 	// 충돌 확인 함수.
 	bool Intersect(const DrawableActor& other);
 
+	void RedrawImage(const char* image, Color color);
+
 	// Getter.
 	inline int Width() const { return width; }
 

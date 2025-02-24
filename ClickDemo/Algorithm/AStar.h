@@ -23,11 +23,14 @@ public:
 	AStar();
 	~AStar();
 
+	virtual void Update(float deltaTime);
+	virtual void Draw();
+
 	// 경로 검색 함수.
-	std::vector<Node*> FindPath(Node* startNode, Node* goalNode, const std::vector<std::vector<int>>& grid);
+	std::vector<Node*> FindPath(Node* startNode, Node* goalNode, const std::vector<std::vector<char>>& grid);
 
 	// 그리드 출력 함수.
-	void DisplayGridWithPath(std::vector<std::vector<int>>& grid, const std::vector<Node*>& path);
+	void DisplayGridWithPath(std::vector<std::vector<char>>& grid, const std::vector<Node*>& path);
 
 private:
 	// 탐색을 마친 후 최적 경로를 반환하는 함수.
@@ -38,7 +41,7 @@ private:
 	float CalculateHeuristic(Node* currentNode, Node* goalNode);
 
 	// 탐색하려는 위치가 그리드 범위 안에 있는지 확인하는 함수.
-	bool IsInRange(int x, int y, const std::vector<std::vector<int>>& grid);
+	bool IsInRange(int x, int y, const std::vector<std::vector<char>>& grid);
 
 	// 방문하려는 위치가 이미 방문했던 노드인지 확인하는 함수.
 	bool HasVisited(int x, int y, float gCost);

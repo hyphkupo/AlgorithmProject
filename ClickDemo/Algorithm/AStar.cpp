@@ -25,7 +25,15 @@ AStar::~AStar()
 	closedList.clear();
 }
 
-std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::vector<std::vector<int>>& grid)
+void AStar::Update(float deltaTime)
+{
+}
+
+void AStar::Draw()
+{
+}
+
+std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::vector<std::vector<char>>& grid)
 {
 	this->startNode = startNode;
 	this->goalNode = goalNode;
@@ -108,7 +116,7 @@ std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::v
 			}
 
 			// 이동할 위치가 장애물인 경우에는 무시.
-			if (grid[newY][newX] == 1)
+			if (grid[newY][newX] == '1')
 			{
 				continue;
 			}
@@ -177,7 +185,7 @@ float AStar::CalculateHeuristic(Node* currentNode, Node* goalNode)
 	return static_cast<float>(std::sqrt(std::pow(diff.x, 2) + std::pow(diff.y, 2)));
 }
 
-bool AStar::IsInRange(int x, int y, const std::vector<std::vector<int>>& grid)
+bool AStar::IsInRange(int x, int y, const std::vector<std::vector<char>>& grid)
 {
 	// x, y 범위가 벗어나면 false 반환.
 	if (x < 0 || x >= grid[0].size() || y < 0 || y >= grid.size())
@@ -242,12 +250,12 @@ bool AStar::IsDestination(Node* node)
 	return *node == *goalNode;
 }
 
-void AStar::DisplayGridWithPath(std::vector<std::vector<int>>& grid, const std::vector<Node*>& path)
+void AStar::DisplayGridWithPath(std::vector<std::vector<char>>& grid, const std::vector<Node*>& path)
 {
 	for (const Node* node : path)
 	{
 		// 경로는 '2'로 표시.
-		grid[node->position.y][node->position.x] = 2;
+		grid[node->position.y][node->position.x] = '2';
 	}
 
 	for (int y = 0; y < grid.size(); ++y)
@@ -255,21 +263,24 @@ void AStar::DisplayGridWithPath(std::vector<std::vector<int>>& grid, const std::
 		for (int x = 0; x < grid[0].size(); ++x)
 		{
 			// 장애물.
-			if (grid[y][x] == 1)
+			if (grid[y][x] == '1')
 			{
 				std::cout << "1 ";
+				//grid[y][x] = '1';
 			}
 
 			// 경로.
-			else if (grid[y][x] == 2)
+			else if (grid[y][x] == '2')
 			{
 				std::cout << "* ";
+				//grid[y][x] = '*';
 			}
 
 			// 빈 공간.
-			else if (grid[y][x] == 0)
+			else if (grid[y][x] == '0')
 			{
 				std::cout << "0 ";
+				//grid[y][x] = '0';
 			}
 		}
 

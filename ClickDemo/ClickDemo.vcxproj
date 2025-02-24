@@ -167,6 +167,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor\Wall.cpp" />
+    <ClCompile Include="Actor\Ground.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Start.cpp" />
     <ClCompile Include="Algorithm\AStar.cpp" />
@@ -174,6 +176,8 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor\Wall.h" />
+    <ClInclude Include="Actor\Ground.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Start.h" />
     <ClInclude Include="Algorithm\AStar.h" />

@@ -368,7 +368,7 @@ void Engine::ClearImageBuffer()
 		}
 
 		// 각 줄 끝에 개행 문자 추가.
-		auto& buffer = imageBuffer[(y * (screenSize.x + 1)) + screenSize.x];
+		auto& buffer = imageBuffer[(y * (screenSize.x + 1)) + screenSize.x + 1];
 		buffer.Char.AsciiChar = '\n';
 		buffer.Attributes = 0;
 	}
