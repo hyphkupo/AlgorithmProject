@@ -5,6 +5,7 @@
 #include "Actor/Start.h"
 #include "Actor/Wall.h"
 #include "Actor/Ground.h"
+#include "Actor/Path.h"
 
 #include "Algorithm/AStar.h"
 #include "Algorithm/Node.h"
@@ -87,7 +88,7 @@ bool DemoLevel::ParseMap(const char* path)
 				continue;
 			}
 
-			// 맵 문자가 0이면 그라운드 액터 생성
+			// 맵 문자가 1이면 그라운드 액터 생성
 			else if (mapChar == '1')
 			{
 				Ground* ground = new Ground(Vector2(xPosition, yPosition));
@@ -158,24 +159,21 @@ bool DemoLevel::ParseMap(const char* path)
 
 DemoLevel::DemoLevel()
 {
-	//ParseMap("../Assets/Map.txt");
+	//map =
+	//{
+	//	{ '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1' },
+	//	{ '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '1', '1' },
+	//	{ '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', 'e', '1' },
+	//	{ '1', '0', '0', '0', '1', '1', '1', '0', '0', '1', '1', '1', '0', '0', '0', '1' },
+	//	{ '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1' },
+	//	{ '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1' },
+	//	{ '1', '0', '0', '0', '1', '1', '1', '0', '0', '1', '1', '1', '0', '0', '1', '1' },
+	//	{ '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1' },
+	//	{ '1', 's', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1' },
+	//	{ '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1' },
+	//};
 
-	map =
-	{
-		{ '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1' },
-		{ '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '1', '1' },
-		{ '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', 'e', '1' },
-		{ '1', '0', '0', '0', '1', '1', '1', '0', '0', '1', '1', '1', '0', '0', '0', '1' },
-		{ '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1' },
-		{ '1', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1' },
-		{ '1', '0', '0', '0', '1', '1', '1', '0', '0', '1', '1', '1', '0', '0', '1', '1' },
-		{ '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1' },
-		{ '1', 's', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '1' },
-		{ '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1' },
-	};
-
-	//if (ParseMap("../Assets/Map.txt"))
-	if (true)
+	if (ParseMap("./Assets/Map3.txt"))
 	{
 		bool initialize = false;
 		mapSizeY = map.size();
@@ -190,11 +188,13 @@ DemoLevel::DemoLevel()
 					Wall* wall = new Wall(Vector2(x, y));
 					actors.push_back(wall);
 				}
+
 				if (map[y][x] == '0')
 				{
 					Ground* ground = new Ground(Vector2(x, y));
 					actors.push_back(ground);
 				}
+
 				if (map[y][x] == 's' || map[y][x] == 'e')
 				{
 					Ground* ground = new Ground(Vector2(x, y));
@@ -248,37 +248,66 @@ void DemoLevel::Update(float deltaTime)
 {
 	Super::Update(deltaTime);
 
+	Path* pa = nullptr;
+
 	if (Engine::Get().GetKeyDown(VK_SPACE))
 	{
-		AStar aStar;
+		for (Actor* a : actors)
+		{
+			Path* pt = a->As<Path>();
+			if (pt)
+			{
+				a->Destroy();
+				//SafeDelete(a);
+			}
+		}
 
 		startNode->position = s->Position();
 		goalNode->position = p->Position();
-
-		//if (map[startNode->position.x][startNode->position.y] == '1')
-		//{
-		//	actors[startNode->position.x * mapSize + startNode->position.y - 1] = new Ground(startNode->position);
-		//}
+		
+		AStar aStar;
 
 		std::vector<Node*> path = aStar.FindPath(startNode, goalNode, map);
 
-		if (!path.empty())
+		std::vector<Vector2> pathNode;
+
+		if (path.empty())
 		{
-			aStar.DisplayGridWithPath(map, path);
+			isEmpty = true;
 		}
 
-		//if (!path.empty())
-		//{
-		//	//Engine::Get().Clear();
-		//	/*aStar.DisplayGridWithPath(map, path);*/
-		//	for (const Node* node : path)
-		//	{
-		//		// 경로는 '2'로 표시.
-		//		//map[node->position.y][node->position.x] = '2';
-		//		//pathChar.push_back(node->position);
-		//		//Engine::Get().Draw(node->position, "+", Color::Blue);
-		//	}
-		//}
+		// 경로가 있으면
+		if (!path.empty())
+		{
+			for (Actor* a : actors)
+			{
+				for (Node* node : path)
+				{
+					if (node->position.x == startNode->position.x && node->position.y == startNode->position.y)
+					{
+						continue;
+					}
+
+					else if (node->position.x == goalNode->position.x && node->position.y == goalNode->position.y)
+					{
+						continue;
+					}
+
+					else if (node->position.x == a->Position().x && node->position.y && a->Position().y)
+					{
+						pathNode.push_back(Vector2(node->position.x, node->position.y));
+					}
+				}
+			}
+		}
+		
+		for (auto& ix : pathNode)
+		{
+			pa = new Path(ix);
+			actors.push_back(pa);
+		}
+
+		pathNode.clear();
 	}
 }
 
@@ -288,68 +317,11 @@ void DemoLevel::Draw()
 
 	//if (Engine::Get().GetKeyDown(VK_SPACE))
 	//{
-	//	AStar aStar;
-
-	//	startNode->position = s->Position();
-	//	//if (map[startNode->position.x][startNode->position.y] == '1')
-	//	//{
-	//	//	actors[startNode->position.x * mapSize + startNode->position.y - 1] = new Ground(startNode->position);
-	//	//}
-	//	goalNode->position = p->Position();
-	//	std::vector<Node*> path = aStar.FindPath(startNode, goalNode, map);
-
-	//	if (!path.empty())
+	//	if (isEmpty)
 	//	{
-	//		//Engine::Get().Clear();
-	//		/*aStar.DisplayGridWithPath(map, path);*/
-	//		for (const Node* node : path)
-	//		{
-	//			// 경로는 '2'로 표시.
-	//			//map[node->position.y][node->position.x] = '2';
-	//			//pathChar.push_back(node->position);]
-	//			//for (auto& ac : actors)
-	//			//{
-	//			//	if (ac->Position().x == node->position.x && ac->Position().y == node->position.y)
-	//			//	{
-	//			//		SafeDelete(ac);
-	//			//		map[node->position.y][node->position.x] = '+';
-	//			//	}
-	//			//}
-
-	//			//Sleep(3000);
-	//		}
-
-	//		/*
-	//		//for (int y = 0; y < map.size(); ++y)
-	//		//{
-	//		//	for (int x = 0; x < map[0].size(); ++x)
-	//		//	{
-	//		//		// 장애물.
-	//		//		if (map[y][x] == '1')
-	//		//		{
-	//		//			std::cout << "1 ";
-	//		//			//grid[y][x] = '1';
-	//		//		}
-
-	//		//		// 경로.
-	//		//		else if (map[y][x] == '2')
-	//		//		{
-	//		//			std::cout << "* ";
-	//		//			//grid[y][x] = '*';
-	//		//		}
-
-	//		//		// 빈 공간.
-	//		//		else if (map[y][x] == '0')
-	//		//		{
-	//		//			std::cout << "0 ";
-	//		//			//grid[y][x] = '0';
-	//		//		}
-	//		//	}
-
-	//		//	std::cout << "\n";
-	//		//}
-	//		*/
-
+	//		Engine::Get().Draw(Vector2(Engine::Get().ScreenSize().x - 26, Engine::Get().ScreenSize().y - 14), "경로를 찾을 수 없음");
+	//		isEmpty = false;
+	//		//Sleep(3000);
 	//	}
 	//}
 }

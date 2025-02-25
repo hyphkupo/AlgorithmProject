@@ -6,6 +6,7 @@ class DrawableActor;
 class Node;
 class Start;
 class Player;
+class Path;
 class DemoLevel : public Level
 {
 	// RTTI Á¤ÀÇ.
@@ -23,13 +24,13 @@ public:
 	int mapSizeX = 0;
 	int mapSizeY = 0;
 	std::vector<std::vector<char>> map;
+	
+	Node* startNode = nullptr;
+	Node* goalNode = nullptr;
 
 private:
 	Start* s = nullptr;
 	Player* p = nullptr;
 
-	Node* startNode = nullptr;
-	Node* goalNode = nullptr;
-
-	//std::vector<Vector2> pathChar;
+	bool isEmpty = false;
 };

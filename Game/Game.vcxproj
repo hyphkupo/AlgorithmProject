@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b2f1d3c9-5047-47ad-bc54-326073358425}</ProjectGuid>
-    <RootNamespace>ClickDemo</RootNamespace>
+    <ProjectGuid>{816a5684-c83b-4137-b107-cb6626b5c08d}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Game</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -117,7 +118,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\Lib\;</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
@@ -157,7 +157,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\Lib\;</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
@@ -167,28 +166,35 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Actor\Path.cpp" />
-    <ClCompile Include="Actor\Wall.cpp" />
+    <ClCompile Include="Actor\Air.cpp" />
+    <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Actor\Ground.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
-    <ClCompile Include="Actor\Start.cpp" />
+    <ClCompile Include="Actor\PlayerBubble.cpp" />
+    <ClCompile Include="Actor\Wall.cpp" />
     <ClCompile Include="Algorithm\AStar.cpp" />
-    <ClCompile Include="Level\DemoLevel.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Level\GameLevel.cpp" />
+    <ClCompile Include="Level\MenuLevel.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actor\Path.h" />
-    <ClInclude Include="Actor\Wall.h" />
+    <ClInclude Include="Actor\Air.h" />
+    <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Actor\Ground.h" />
     <ClInclude Include="Actor\Player.h" />
-    <ClInclude Include="Actor\Start.h" />
+    <ClInclude Include="Actor\PlayerBubble.h" />
+    <ClInclude Include="Actor\Wall.h" />
     <ClInclude Include="Algorithm\AStar.h" />
     <ClInclude Include="Algorithm\Node.h" />
-    <ClInclude Include="Level\DemoLevel.h" />
+    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Level\GameLevel.h" />
+    <ClInclude Include="Level\MenuLevel.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Assets\Map.txt" />
-    <Text Include="Assets\Map2.txt" />
+    <Text Include="Assets\Maps\Stage1.txt" />
+    <Text Include="Assets\Maps\Stage2.txt" />
+    <Text Include="Assets\Maps\Stage3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -35,9 +35,6 @@ void AStar::Draw()
 
 std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::vector<std::vector<char>>& grid)
 {
-	openList.clear();
-	closedList.clear();
-
 	this->startNode = startNode;
 	this->goalNode = goalNode;
 
@@ -135,10 +132,6 @@ std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::v
 
 			// 방문을 위한 이웃 노드 생성.
 			// 방문할 노드의 gCost, hCost, fCost 계산.
-			if (newX == 12 && newY == 3)
-			{
-				int a = 1;
-			}
 			Node* neighborNode = new Node(Vector2(newX, newY), currentNode);
 			neighborNode->gCost = currentNode->gCost + direction.cost;
 			neighborNode->hCost = CalculateHeuristic(neighborNode, goalNode);
