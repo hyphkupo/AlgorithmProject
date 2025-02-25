@@ -174,6 +174,11 @@ DemoLevel::DemoLevel()
 	//	{ '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1' },
 	//};
 
+	s = new Start(this);
+	p = new Player(this);
+	AddActor(s);
+	AddActor(p);
+
 	if (ParseMap("./Assets/Map3.txt"))
 	{
 		bool initialize = false;
@@ -222,38 +227,26 @@ DemoLevel::DemoLevel()
 
 				if (map[y][x] == 's')
 				{
-					//startNode = new Node(Vector2(x, y));
+					s->SetPosition(Vector2(x, y));
 					map[y][x] = '0';
 					continue;
 				}
 
 				if (map[y][x] == 'e')
 				{
-					//goalNode = new Node(Vector2(x, y));
+					p->SetPosition(Vector2(x, y));
 					map[y][x] = '0';
 					continue;
 				}
 			}
 		}
-
-		s = new Start(this);
-		p = new Player(this);
-		//s->SetPosition(startNode->position);
-		//p->SetPosition(goalNode->position);
-		AddActor(s);
-		AddActor(p);
 	}
 }
 
 DemoLevel::~DemoLevel()
 {
-	//delete aStar;
-
 	delete startNode;
 	delete goalNode;
-
-	//delete s;
-	//delete p;
 }
 
 void DemoLevel::Update(float deltaTime)
@@ -270,18 +263,12 @@ void DemoLevel::Update(float deltaTime)
 			if (pt)
 			{
 				a->Destroy();
-				//SafeDelete(a);
 			}
 		}
 
-
 		startNode = new Node(s->Position());
-
 		goalNode = new Node(p->Position());
 
-		//startNode->position = s->Position();
-		//goalNode->position = p->Position();
-		
 		AStar aStar;
 		std::vector<Node*> path = aStar.FindPath(startNode, goalNode, map);
 
@@ -324,8 +311,7 @@ void DemoLevel::Update(float deltaTime)
 		}
 
 		pathNode.clear();
-		//SafeDelete(aStar);
-		//SafeDelete(goalNode);
+		SafeDelete(goalNode);
 	}
 }
 
