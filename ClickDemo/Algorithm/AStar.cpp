@@ -11,17 +11,17 @@ AStar::AStar()
 
 AStar::~AStar()
 {
-	// 메모리 해제.
-	//for (Node* node : openList)
-	//{
-	//	SafeDelete(node);
-	//}
+	//메모리 해제.
+	for (Node* node : openList)
+	{
+		SafeDelete(node);
+	}
 	openList.clear();
 
-	//for (Node* node : closedList)
-	//{
-	//	SafeDelete(node);
-	//}
+	for (Node* node : closedList)
+	{
+		SafeDelete(node);
+	}
 	closedList.clear();
 }
 
@@ -35,7 +35,17 @@ void AStar::Draw()
 
 std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::vector<std::vector<char>>& grid)
 {
+	// 메모리 해제.
+	for (Node* node : openList)
+	{
+		SafeDelete(node);
+	}
 	openList.clear();
+
+	for (Node* node : closedList)
+	{
+		SafeDelete(node);
+	}
 	closedList.clear();
 
 	this->startNode = startNode;
@@ -177,7 +187,9 @@ std::vector<Node*> AStar::ConstructPath(Node* goalNode)
 {
 	// 목표 노드 부터, 부모 노드를 따라 역추적하면서 경로 노드 설정.
 	std::vector<Node*> path;
+
 	Node* currentNode = goalNode;
+	
 	while (currentNode != nullptr)
 	{
 		path.emplace_back(currentNode);
@@ -245,7 +257,7 @@ bool AStar::HasVisited(int x, int y, float gCost)
 			else
 			{
 				closedList.erase(closedList.begin() + ix);
-				SafeDelete(node);
+				//SafeDelete(node);
 			}
 		}
 	}

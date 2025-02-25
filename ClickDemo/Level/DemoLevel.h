@@ -16,6 +16,7 @@ public:
 	bool IsValidLocation(int row, int col);
 	bool ParseMap(const char* path);
 	DemoLevel();
+	virtual ~DemoLevel();
 
 	virtual void Update(float deltaTime) override;
 	virtual void Draw() override;

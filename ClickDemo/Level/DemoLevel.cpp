@@ -39,6 +39,7 @@ bool DemoLevel::IsValidLocation(int row, int col)
 bool DemoLevel::ParseMap(const char* path)
 {
 	FILE* file = nullptr;
+	//fopen_s(&file, path, "rb");
 	fopen_s(&file, path, "r");
 
 	if (file)
@@ -52,7 +53,7 @@ bool DemoLevel::ParseMap(const char* path)
 
 		map.clear();
 
-		sscanf_s(buffer, "size: %d", &mapSizeY);
+		sscanf_s(buffer, "size %d", &mapSizeY);
 
 		std::vector<std::string> lines;
 		lines.reserve(mapSizeY);
@@ -221,14 +222,14 @@ DemoLevel::DemoLevel()
 
 				if (map[y][x] == 's')
 				{
-					startNode = new Node(Vector2(x, y));
+					//startNode = new Node(Vector2(x, y));
 					map[y][x] = '0';
 					continue;
 				}
 
 				if (map[y][x] == 'e')
 				{
-					goalNode = new Node(Vector2(x, y));
+					//goalNode = new Node(Vector2(x, y));
 					map[y][x] = '0';
 					continue;
 				}
@@ -237,11 +238,22 @@ DemoLevel::DemoLevel()
 
 		s = new Start(this);
 		p = new Player(this);
-		s->SetPosition(startNode->position);
-		p->SetPosition(goalNode->position);
+		//s->SetPosition(startNode->position);
+		//p->SetPosition(goalNode->position);
 		AddActor(s);
 		AddActor(p);
 	}
+}
+
+DemoLevel::~DemoLevel()
+{
+	//delete aStar;
+
+	delete startNode;
+	delete goalNode;
+
+	//delete s;
+	//delete p;
 }
 
 void DemoLevel::Update(float deltaTime)
@@ -254,7 +266,7 @@ void DemoLevel::Update(float deltaTime)
 	{
 		for (Actor* a : actors)
 		{
-			Path* pt = a->As<Path>();
+			Path* pt = a->As<Path>();	// 액터가 Path 클래스이면 삭제
 			if (pt)
 			{
 				a->Destroy();
@@ -262,11 +274,15 @@ void DemoLevel::Update(float deltaTime)
 			}
 		}
 
-		startNode->position = s->Position();
-		goalNode->position = p->Position();
+
+		startNode = new Node(s->Position());
+
+		goalNode = new Node(p->Position());
+
+		//startNode->position = s->Position();
+		//goalNode->position = p->Position();
 		
 		AStar aStar;
-
 		std::vector<Node*> path = aStar.FindPath(startNode, goalNode, map);
 
 		std::vector<Vector2> pathNode;
@@ -308,6 +324,8 @@ void DemoLevel::Update(float deltaTime)
 		}
 
 		pathNode.clear();
+		//SafeDelete(aStar);
+		//SafeDelete(goalNode);
 	}
 }
 
