@@ -23,6 +23,12 @@ AStar::~AStar()
 		SafeDelete(node);
 	}
 	closedList.clear();
+
+	for (Node* node : storeClosedList)
+	{
+		SafeDelete(node);
+	}
+	storeClosedList.clear();
 }
 
 void AStar::Update(float deltaTime)
@@ -258,6 +264,7 @@ bool AStar::HasVisited(int x, int y, float gCost)
 			{
 				closedList.erase(closedList.begin() + ix);
 				//SafeDelete(node);
+				storeClosedList.push_back(node);
 			}
 		}
 	}

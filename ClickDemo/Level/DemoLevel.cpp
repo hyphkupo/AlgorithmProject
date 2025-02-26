@@ -245,8 +245,9 @@ DemoLevel::DemoLevel()
 
 DemoLevel::~DemoLevel()
 {
-	delete startNode;
-	delete goalNode;
+	//delete startNode;
+	//delete goalNode;
+	startNode = nullptr;
 }
 
 void DemoLevel::Update(float deltaTime)

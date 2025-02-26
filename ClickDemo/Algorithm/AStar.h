@@ -62,4 +62,6 @@ private:
 
 	// 목표 노드.
 	Node* goalNode;
+
+	std::vector<Node*> storeClosedList;
 };
