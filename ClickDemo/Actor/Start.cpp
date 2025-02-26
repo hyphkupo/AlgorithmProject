@@ -13,6 +13,10 @@ void Start::Update(float deltaTime)
 
 	if (Engine::Get().GetKeyDown(VK_LBUTTON))
 	{
+		//if (refLevel->getMap()[Engine::Get().MousePosition().x][Engine::Get().MousePosition().y] == '1')
+		//{
+		//}
+
 		if (Engine::Get().MousePosition().x >= refLevel->mapSizeX)
 		{
 			if (Engine::Get().MousePosition().y >= refLevel->mapSizeY)

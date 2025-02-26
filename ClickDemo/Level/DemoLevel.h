@@ -21,6 +21,8 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void Draw() override;
 
+	const std::vector<std::vector<char>>& getMap();
+
 public:
 	int mapSizeX = 0;
 	int mapSizeY = 0;

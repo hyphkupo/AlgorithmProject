@@ -248,6 +248,7 @@ DemoLevel::~DemoLevel()
 	//delete startNode;
 	//delete goalNode;
 	startNode = nullptr;
+	//SafeDelete(startNode);
 }
 
 void DemoLevel::Update(float deltaTime)
@@ -258,6 +259,9 @@ void DemoLevel::Update(float deltaTime)
 
 	if (Engine::Get().GetKeyDown(VK_SPACE))
 	{
+		// const std::vector<std::vector<char>>& map
+		// Start, Player에 맵 넘겨주는 함수 호출
+
 		for (Actor* a : actors)
 		{
 			Path* pt = a->As<Path>();	// 액터가 Path 클래스이면 삭제
@@ -329,4 +333,9 @@ void DemoLevel::Draw()
 	//		//Sleep(3000);
 	//	}
 	//}
+}
+
+const std::vector<std::vector<char>>& DemoLevel::getMap()
+{
+	return map;
 }

@@ -24,11 +24,11 @@ AStar::~AStar()
 	}
 	closedList.clear();
 
-	for (Node* node : storeClosedList)
-	{
-		SafeDelete(node);
-	}
-	storeClosedList.clear();
+	//for (Node* node : storeClosedList)
+	//{
+	//	SafeDelete(node);
+	//}
+	//storeClosedList.clear();
 }
 
 void AStar::Update(float deltaTime)
@@ -135,7 +135,7 @@ std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::v
 			}
 
 			// 이동할 위치가 장애물인 경우에는 무시.
-			if (grid[newY][newX] == '1' 
+			if (grid[newY][newX] == '1'
 				//&& newX != startNode->position.x && newY != startNode->position.y
 				//&& newX != goalNode->position.x && newY != goalNode->position.y
 				)
@@ -151,10 +151,6 @@ std::vector<Node*> AStar::FindPath(Node* startNode, Node* goalNode, const std::v
 
 			// 방문을 위한 이웃 노드 생성.
 			// 방문할 노드의 gCost, hCost, fCost 계산.
-			if (newX == 12 && newY == 3)
-			{
-				int a = 1;
-			}
 			Node* neighborNode = new Node(Vector2(newX, newY), currentNode);
 			neighborNode->gCost = currentNode->gCost + direction.cost;
 			neighborNode->hCost = CalculateHeuristic(neighborNode, goalNode);
@@ -254,7 +250,7 @@ bool AStar::HasVisited(int x, int y, float gCost)
 		if ((node->position.x == x && node->position.y == y))
 		{
 			// 위치가 같고, 비용이 더 크면 방문할 이유가 없기 때문에 방문했다고 판단.
-			if (gCost > node->gCost)
+			if (gCost >= node->gCost)
 			{
 				return true;
 			}
@@ -263,8 +259,8 @@ bool AStar::HasVisited(int x, int y, float gCost)
 			else
 			{
 				closedList.erase(closedList.begin() + ix);
-				//SafeDelete(node);
-				storeClosedList.push_back(node);
+				SafeDelete(node);
+				//storeClosedList.push_back(node);
 			}
 		}
 	}
