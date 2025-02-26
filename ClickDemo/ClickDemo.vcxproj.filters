@@ -69,5 +69,6 @@
   <ItemGroup>
     <Text Include="Assets\Map.txt" />
     <Text Include="Assets\Map2.txt" />
+    <Text Include="Assets\Map3.txt" />
   </ItemGroup>
 </Project>
