@@ -323,16 +323,6 @@ void DemoLevel::Update(float deltaTime)
 void DemoLevel::Draw()
 {
 	Super::Draw();
-
-	//if (Engine::Get().GetKeyDown(VK_SPACE))
-	//{
-	//	if (isEmpty)
-	//	{
-	//		Engine::Get().Draw(Vector2(Engine::Get().ScreenSize().x - 26, Engine::Get().ScreenSize().y - 14), "경로를 찾을 수 없음");
-	//		isEmpty = false;
-	//		//Sleep(3000);
-	//	}
-	//}
 }
 
 const std::vector<std::vector<char>>& DemoLevel::getMap()
